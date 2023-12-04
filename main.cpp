@@ -48,38 +48,37 @@ void mergeSort(vector<int>& vec, int left, int right) {
 }
 
 
-void swap(int* a, int* b)
+void swap(vector<int>& vec, int a, int b)
 {
-    int t = *a;
-    *a = *b;
-    *b = t;
+    int temp = vec[a];
+    vec[a] = vec[b];
+    vec[b] = temp;
 }
 
-int partition (int arr[], int low, int high)
+int partition (vector<int>& vec, int low, int high)
 {
-    int pivot = arr[high];
+    int pivot = vec[high];
     int i = (low - 1);
 
-    for (int j = low; j <= high- 1; j++)
+    for (int j = low; j < high; j++)
     {
-        if (arr[j] <= pivot)
+        if (vec[j] <= pivot)
         {
             i++;
-            swap(&arr[i], &arr[j]);
+            swap(vec, i, j);
         }
     }
-    swap(&arr[i + 1], &arr[high]);
+    swap(vec, i + 1, high);
     return (i + 1);
 }
 
-void quickSort(int arr[], int low, int high)
+void quickSort(vector<int>& vec, int low, int high)
 {
     if (low < high)
     {
-        int pivot = partition(arr, low, high);
-
-        quickSort(arr, low, pivot - 1);
-        quickSort(arr, pivot + 1, high);
+        int pivot = partition(vec, low, high);
+        quickSort(vec, low, pivot - 1);
+        quickSort(vec, pivot + 1, high);
     }
 }
 
@@ -124,16 +123,11 @@ void radixSort(vector<int>& vec, int n)
 int main() {
     vector<int> vec;
 
-    for (int i = 0; i < 1000; i++){
+    for (int i = 0; i < 10000; i++){
         vec.push_back(rand());
     }
 
-    for (int num : vec) {
-        cout << num << " ";
-    }
-
-    radixSort(vec, vec.size());
-    cout << "After merge sort: ";
+    quickSort(vec, 0, vec.size() - 1);
 
     for (int num : vec) {
         cout << num << " ";
