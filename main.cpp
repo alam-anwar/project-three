@@ -2,6 +2,7 @@
 // by Al Anwar, Avery Birle, and John Aitken
 
 #include <iostream>
+#include <ctsdlib.h>
 using namespace std;
 
 void merge(int *array, int l, int m, int r) {
@@ -123,9 +124,14 @@ void radixSort(int arr[], int n)
 }
 
 int main() {
-    int arr[] = {369, 611, 965, 593, 81, 251, 840, 996, 303, 736};
+    //int arr[] = {369, 611, 965, 593, 81, 251, 840, 996, 303, 736};
+    int arr[100000];
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100000; i++){
+        arr[i] = rand();
+    }
+
+    for (int i = 0; i < 100000; i++) {
         cout << arr[i] << " ";
     }
     cout << endl;
@@ -133,7 +139,7 @@ int main() {
     radixSort(arr, sizeof(arr) / sizeof(int));
     cout << "After radix sort: ";
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100000; i++) {
         cout << arr[i] << " ";
     }
 }

@@ -1,0 +1,6 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" -S /Users/averybirle/Documents/GitHub/project-three -B /Users/averybirle/Documents/GitHub/project-three/cmake-build-debug
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.26 or higher is required.  You are running version 3.24.2
+
+
+-- Configuring incomplete, errors occurred!
