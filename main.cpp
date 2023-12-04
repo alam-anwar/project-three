@@ -83,48 +83,48 @@ void quickSort(int arr[], int low, int high)
     }
 }
 
-int getMax(int arr[], int n)
+int getMax(vector<int> vec, int n)
 {
-    int mx = arr[0];
-    for (int i = 1; i < n; i++)
-        if (arr[i] > mx)
-            mx = arr[i];
-    return mx;
+    int max = vec[0];
+    for (int num : vec)
+        if (num > max)
+            max = num;
+    return max;
 }
 
-void countSort(int arr[], int n, int exp)
+void countSort(vector<int>& vec, int n, int exp)
 {
-    int output[n];
-    int i, count[10] = { 0 };
+    vector<int> result(n);
+    vector<int> count(10, 0);
 
-    for (i = 0; i < n; i++)
-        count[(arr[i] / exp) % 10]++;
+    for (int i = 0; i < n; ++i)
+        count[(vec[i] / exp) % 10]++;
 
-    for (i = 1; i < 10; i++)
+    for (int i = 1; i < 10; ++i)
         count[i] += count[i - 1];
 
-    for (i = n - 1; i >= 0; i--) {
-        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-        count[(arr[i] / exp) % 10]--;
+    for (int i = n - 1; i >= 0; --i) {
+        result[count[(vec[i] / exp) % 10] - 1] = vec[i];
+        --count[(vec[i] / exp) % 10];
     }
 
-    for (i = 0; i < n; i++)
-        arr[i] = output[i];
+    for (int i = 0; i < n; ++i)
+        vec[i] = result[i];
 }
 
-void radixSort(int arr[], int n)
+
+void radixSort(vector<int>& vec, int n)
 {
+    int max = getMax(vec, n);
 
-    int m = getMax(arr, n);
-
-    for (int exp = 1; m / exp > 0; exp *= 10)
-        countSort(arr, n, exp);
+    for (int exp = 1; max / exp > 0; exp *= 10)
+        countSort(vec, n, exp);
 }
 
 int main() {
     vector<int> vec;
 
-    for (int i = 0; i < 100000; i++){
+    for (int i = 0; i < 1000; i++){
         vec.push_back(rand());
     }
 
@@ -132,7 +132,7 @@ int main() {
         cout << num << " ";
     }
 
-    mergeSort(vec, 0, vec.size() - 1);
+    radixSort(vec, vec.size());
     cout << "After merge sort: ";
 
     for (int num : vec) {
