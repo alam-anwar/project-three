@@ -2,50 +2,48 @@
 // by Al Anwar, Avery Birle, and John Aitken
 
 #include <iostream>
-#include <ctsdlib.h>
+#include <cstdlib>
+#include <vector>
 using namespace std;
 
-void merge(int *array, int l, int m, int r) {
-    int i, j, k, nl, nr;
-    nl = m-l+1; nr = r-m;
-    int larr[nl], rarr[nr];
+void merge(vector<int>& vec, int left, int mid, int right) {
+    vector<int> mix;
+    int i = left;
+    int j = mid + 1;
 
-    for(i = 0; i<nl; i++)
-        larr[i] = array[l+i];
-
-    for(j = 0; j<nr; j++)
-        rarr[j] = array[m+1+j];
-
-    i = 0; j = 0; k = l;
-
-    while(i < nl && j<nr) {
-        if(larr[i] <= rarr[j]) {
-            array[k] = larr[i];
+    // mixing the two sides together.
+    while (i <= mid && j <= right) {
+        if (vec[i] <= vec[j]) {
+            mix.push_back(vec[i]);
             i++;
         } else {
-            array[k] = rarr[j];
+            mix.push_back(vec[j]);
             j++;
         }
-        k++;
     }
-    while(i<nl) {
-        array[k] = larr[i];
-        i++; k++;
+
+    // once one side is complete, add the rest of the other side to mix.
+    while (i <= mid) {
+        mix.push_back(vec[i]);
+        i++;
     }
-    while(j<nr) {
-        array[k] = rarr[j];
-        j++; k++;
+    while (j <= right) {
+        mix.push_back(vec[j]);
+        j++;
+    }
+
+    for (int k = left; k <= right; k++) {
+        vec[k] = mix[k - left];
     }
 }
 
-void mergeSort(int *array, int l, int r) {
-    int m;
-    if(l < r) {
-        int m = l+(r-l)/2;
+void mergeSort(vector<int>& vec, int left, int right) {
+    if(left < right) {
+        int mid = left + (right - left) / 2;
 
-        mergeSort(array, l, m);
-        mergeSort(array, m+1, r);
-        merge(array, l, m, r);
+        mergeSort(vec, left, mid);
+        mergeSort(vec, mid + 1, right);
+        merge(vec, left, mid, right);
     }
 }
 
@@ -124,22 +122,20 @@ void radixSort(int arr[], int n)
 }
 
 int main() {
-    //int arr[] = {369, 611, 965, 593, 81, 251, 840, 996, 303, 736};
-    int arr[100000];
+    vector<int> vec;
 
     for (int i = 0; i < 100000; i++){
-        arr[i] = rand();
+        vec.push_back(rand());
     }
 
-    for (int i = 0; i < 100000; i++) {
-        cout << arr[i] << " ";
+    for (int num : vec) {
+        cout << num << " ";
     }
-    cout << endl;
 
-    radixSort(arr, sizeof(arr) / sizeof(int));
-    cout << "After radix sort: ";
+    mergeSort(vec, 0, vec.size() - 1);
+    cout << "After merge sort: ";
 
-    for (int i = 0; i < 100000; i++) {
-        cout << arr[i] << " ";
+    for (int num : vec) {
+        cout << num << " ";
     }
 }
