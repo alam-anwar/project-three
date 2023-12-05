@@ -1,3 +1,6 @@
+// PROJECT 3
+// Al Anwar, John Aitken, Avery Birle
+
 #include "ofMain.h"
 #include "ofApp.h"
 
