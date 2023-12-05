@@ -16,7 +16,7 @@ class ofApp : public ofBaseApp{
         ofxButton button;
 
         std::vector<ofRectangle> rects;
-        std::vector<int> rectHeights;
+        std::vector<int> radixHeights;
         
 		void setup();
 		void update();
@@ -32,8 +32,8 @@ class ofApp : public ofBaseApp{
         void mergeSort(vector<ofRectangle>& vec, int left, int right);
 
 
-        int getMax(vector<ofRectangle> vec);
-        void countSort(vector<ofRectangle>& vec, int n, int exp);
+        int getMax(vector<int> vec);
+        void countSort(vector<int>& vec, int n, int exp);
         void radixSort(vector<ofRectangle>& vec, int n);
 
 		void keyPressed(int key);

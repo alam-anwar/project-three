@@ -17,8 +17,8 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    rectHeights.clear();
-    for (const auto& rect : rects) rectHeights.push_back(rect.getHeight());
+    // rectHeights.clear();
+    // for (const auto& rect : rects) rectHeights.push_back(rect.getHeight());
 }
 
 //--------------------------------------------------------------
@@ -185,7 +185,6 @@ int ofApp::partition (vector<ofRectangle>& vec, int low, int high)
 
 void ofApp::quickSort(vector<ofRectangle>& vec, int low, int high)
 {
-    std::cout << "called\n";
     if (low < high)
     {
         int pivot = partition(rects, low, high);
@@ -194,43 +193,56 @@ void ofApp::quickSort(vector<ofRectangle>& vec, int low, int high)
     }
 }
 
-int ofApp::getMax(vector<ofRectangle> vec)
+int ofApp::getMax(vector<int> vec)
 {
-    int max = (int)vec[0].getHeight();
-    for (const auto& num : vec)
-        if (abs((int)num.getHeight()) > max)
-            max = abs((int)num.getHeight());
+    int max = vec[0];
+    for (int num : vec)
+        if (num > max)
+            max = num;
     return max;
 }
 
-void ofApp::countSort(vector<ofRectangle>& vec, int n, int exp)
+void ofApp::countSort(vector<int>& vec, int n, int exp)
 {
     vector<int> result(n);
     vector<int> count(10, 0);
 
     for (int i = 0; i < n; ++i)
-        count[((int)vec[i].getHeight() / exp) % 10]++;
+        count[(vec[i] / exp) % 10]++;
 
     for (int i = 1; i < 10; ++i)
         count[i] += count[i - 1];
 
     for (int i = n - 1; i >= 0; --i) {
-        result[count[((int)vec[i].getHeight() / exp) % 10] - 1] = (int)vec[i].getHeight();
-        --count[((int)vec[i].getHeight() / exp) % 10];
+        result[count[(vec[i] / exp) % 10] - 1] = vec[i];
+        --count[(vec[i] / exp) % 10];
     }
 
-    for (int i = 0; i < n; ++i){
-        std::cout << "setting height\n";
-        vec[i].setHeight(result[i]);
-    }
+    for (int i = 0; i < n; ++i)
+        vec[i] = result[i];
 }
 
 
 void ofApp::radixSort(vector<ofRectangle>& vec, int n)
 {
-    int max = getMax(vec);
-    std::cout << "max: " << max << "\n";
+    vector<int> heights;
+
+    for (const auto& rect : vec) {
+        heights.push_back(-rect.getHeight());
+    }
+
+    int max = getMax(heights);
 
     for (int exp = 1; max / exp > 0; exp *= 10)
-        countSort(vec, n, exp);
+        countSort(heights, n, exp);
+
+    rects.clear();
+
+    float y = ofGetHeight() - 10;
+
+    for (int i = 0; i < heights.size(); i++) {
+        int height = heights[heights.size()-1-i];
+        ofRectangle rect(i*15, y, 10, -height);
+        rects.push_back(rect);
+    }
 }
